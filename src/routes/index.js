@@ -16,7 +16,7 @@ const getRoutes = (authedUser) => {
             <Route exact path="/" component={HomePage} />
             <Route path="/questions/nothing" component={NotFound404Page} />
             <Route path="/questions/:question_id" component={QuestionDetails} />
-            <Route path="/newquestion" component={NewQuestion} />
+            <Route path="/add" component={NewQuestion} />
             <Route path="/leaderboard" component={LeaderBoard} />
             <Route component={NotFound404Page} />
         </Switch>

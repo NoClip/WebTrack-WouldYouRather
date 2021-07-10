@@ -19,7 +19,7 @@ export class QuestionDetails extends Component {
 
     checkSelectedValue = (value) => this.state.selectedAnswerValue === value;
 
-    isDisabled = () => !this.state.selectedAnswerValue;
+    isDisabled = () => !this.isAnswered() && !this.state.selectedAnswerValue ;
 
     onSubmitClick = (e) => {
         e.preventDefault();
@@ -89,6 +89,8 @@ export class QuestionDetails extends Component {
                             <ProgressBar value={this.props.optionOnePercentage}>
                             </ProgressBar>
 
+                            <h4>{`(${this.props.optionOneAnswersCount} of ${this.props.totalAnswers}) Answers`}</h4>
+
                             {this.props.currentAnswer.value === 'optionOne' &&
                                 <Badge value="Your Answer" severity="success" ></Badge>}
                         </div>
@@ -107,6 +109,8 @@ export class QuestionDetails extends Component {
                             <ProgressBar
                                 value={this.props.optionTwoPercentage}>
                             </ProgressBar>
+
+                            <h4>{`(${this.props.optionTwoAnswersCount} of ${this.props.totalAnswers}) Answers`}</h4>
 
                             {this.props.currentAnswer.value === 'optionTwo' &&
                                 <Badge value="Your Answer" severity="success"></Badge>}
@@ -165,15 +169,19 @@ const mapStateToProps = ({ authedUser, users, questions }, { match }) => {
 
     currentAnswer.value = currentUserObject.answers[match.params.question_id];
 
+    let optionOneAnswersCount = 0;
+    let optionTwoAnswersCount = 0;
+    let totalAnswers = 0;
+
     let optionOnePercentage = 0;
     let optionTwoPercentage = 0;
 
     if (currentAnswer.value) {
         currentAnswer.text = currentQuestionObject[currentAnswer.value].text;
 
-        const optionOneAnswersCount = currentQuestionObject.optionOne.votes.length;
-        const optionTwoAnswersCount = currentQuestionObject.optionTwo.votes.length;
-        const totalAnswers = optionOneAnswersCount + optionTwoAnswersCount;
+        optionOneAnswersCount = currentQuestionObject.optionOne.votes.length;
+        optionTwoAnswersCount = currentQuestionObject.optionTwo.votes.length;
+        totalAnswers = optionOneAnswersCount + optionTwoAnswersCount;
 
         if (totalAnswers === 0) {
             optionOnePercentage = optionTwoPercentage = 0;
@@ -187,6 +195,7 @@ const mapStateToProps = ({ authedUser, users, questions }, { match }) => {
     return {
         questions, currentQuestionObject, currentUserObject,
         currentAnswer, optionOnePercentage, optionTwoPercentage,
+        optionOneAnswersCount, optionTwoAnswersCount, totalAnswers,
     }
 };
 

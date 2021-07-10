@@ -34,7 +34,7 @@ export class NewQuestion extends Component {
 
                     <Divider />
 
-                    <h4>Would you rather...</h4>
+                    <h4>Would You Rather...</h4>
 
                     <form onSubmit={this.insertQuestion} className="p-fluid">
 

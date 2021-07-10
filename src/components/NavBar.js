@@ -26,7 +26,7 @@ export class NavBar extends Component {
             {
                 label: 'New Question',
                 icon: 'pi pi-fw pi-question',
-                command: () => { this.navigateToPage('/newquestion') },
+                command: () => { this.navigateToPage('/add') },
             },
             {
                 label: 'Leader Board',
