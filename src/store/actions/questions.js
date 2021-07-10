@@ -1,82 +1,48 @@
-import { saveQuestionAnswer, saveQuestion } from '../../api/helperMethods';
+import { saveAnswer } from '../../api/helperMethods';
 import { showLoading, hideLoading } from 'react-redux-loading';
 
 const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
-const ADD_ANSWER = 'ADD_ANSWER';
-const ADD_QUESTION = 'ADD_QUESTION';
+const ADD_ANSWER_QUESTION = 'ADD_ANSWER_QUESTION';
+const ADD_QUESTION_QUESTION = 'ADD_QUESTION_QUESTION';
 
-const addQuestion = (Question) => {
-  return {
-    type: ADD_QUESTION,
-    Question,
-  };
-};
-
-const receiveQuestions = (Questions) => {
-  return {
+const receiveQuestions = (Questions) => (
+  {
     type: RECEIVE_QUESTIONS,
     Questions,
-  };
-};
+  });
 
-const addAnswer = ({ authedUser, qid, answer }) => {
-  return {
-    type: ADD_ANSWER,
+const addQuestionAction = (question) => (
+  {
+    type: ADD_QUESTION_QUESTION,
+    question
+  });
+
+
+const addAnswer = (authedUser, qid, answer) => (
+  {
+    type: ADD_ANSWER_QUESTION,
     authedUser,
     qid,
     answer
-  };
-};
+  });
 
-const handleAddQuestion = (question) => {
-  return (dispatch, getState) => {
-    // const { authedUser } = getState();
+const addAnswerQuestion = (authedUser, qid, answer) => ((dispatch) => {
+  dispatch(showLoading());
 
-    dispatch(showLoading());
-
-    return saveQuestion(question)
-      .then((question) => dispatch(addQuestion(question)))
-      .then(() => dispatch(hideLoading()))
-      .catch(e => {
-        console.warn('Error while saving question:', e);
-      });
-  };
-};
-
-const handleSaveQuestionAnswer = (authUser, qid, answer) => {
-  return (dispatch) => {
-    dispatch(showLoading());
-
-    return saveQuestionAnswer(authUser, qid, answer)
-      .then((authUser, qid, answer) => dispatch(addAnswer(authUser, qid, answer)))
-      .then(() => dispatch(hideLoading()))
-      .catch(e => {
-        console.warn('Error while saving answer:', e);
-      });
-  };
-};
-
-
-// export function handleToggleTweet(info) {
-//   return (dispatch) => {
-//     dispatch(toggleTweet(info))
-
-//     return saveLikeToggle(info)
-//       .catch((e) => {
-//         console.warn('Error in handleToggleTweet: ', e)
-//         dispatch(toggleTweet(info))
-//         alert('The was an error liking the tweet. Try again.')
-//       })
-//   }
-// }
+  return saveAnswer(authedUser, qid, answer)
+    .then(() => {
+      dispatch(addAnswer(authedUser, qid, answer));
+    })
+    .then(() => dispatch(hideLoading()))
+    .catch((e) => console.warn('Error while saving answer:', e));
+});
 
 export {
   RECEIVE_QUESTIONS,
-  ADD_ANSWER,
-  ADD_QUESTION,
-  addQuestion,
+  ADD_ANSWER_QUESTION,
+  ADD_QUESTION_QUESTION,
+  addQuestionAction,
   receiveQuestions,
   addAnswer,
-  handleAddQuestion,
-  handleSaveQuestionAnswer
+  addAnswerQuestion
 };

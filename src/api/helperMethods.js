@@ -5,22 +5,21 @@ import {
     _saveQuestion,
 } from './_DATA.js';
 
-const getAllData = () => {
-    return Promise.all([
+const getAllData = () => (
+    Promise.all([
         _getUsers(),
         _getQuestions(),
     ]).then(([users, questions]) => ({
         users,
         questions,
     }))
+);
+
+const saveAnswer = (authedUser, qid, answer) => {
+    return _saveQuestionAnswer({ authedUser, qid, answer })
 };
 
-const saveQuestionAnswer = (info) => {
-    return _saveQuestionAnswer(info)
-};
+const saveQuestion = (optionOneText, optionTwoText, author) =>
+    _saveQuestion({ optionOneText, optionTwoText, author });
 
-const saveQuestion = (question) => {
-    return _saveQuestion(question)
-};
-
-export { getAllData, saveQuestionAnswer, saveQuestion };
+export { getAllData, saveAnswer, saveQuestion };

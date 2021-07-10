@@ -1,26 +1,28 @@
-import { RECEIVE_QUESTIONS, ADD_ANSWER, ADD_QUESTION } from '../actions/questions';
+import { RECEIVE_QUESTIONS, ADD_ANSWER_QUESTION, ADD_QUESTION_QUESTION } from '../actions/questions';
 
 const questions = (state = {}, action) => {
   switch (action.type) {
     case RECEIVE_QUESTIONS:
       return {
         ...state,
-        ...action.questions
+        ...action.Questions
       };
 
-    case ADD_ANSWER:
+    case ADD_ANSWER_QUESTION:
+      const { authedUser, qid, answer } = action;
+
       return {
         ...state,
-        [action.qid]: {
-          ...state[action.qid],
-          [action.answer]: {
-            ...state[action.qid][action.answer],
-            votes: state[action.qid][action.answer].votes.concat(action.authUser)
+        [qid]: {
+          ...state[qid],
+          [answer]: {
+            ...state[qid][answer],
+            votes: state[qid][answer].votes.concat(authedUser)
           }
         }
       };
 
-    case ADD_QUESTION:
+    case ADD_QUESTION_QUESTION:
       return {
         ...state,
         [action.question.id]: action.question
